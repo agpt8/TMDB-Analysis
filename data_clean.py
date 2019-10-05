@@ -84,8 +84,3 @@ def data_cleaning(dataframe):
     data_info(dataframe)
 
     return dataframe
-
-
-if __name__ == '__main__':
-    # data_info(movie_data)
-    data_cleaning(movie_data)
