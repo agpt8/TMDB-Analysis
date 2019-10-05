@@ -15,8 +15,6 @@
 import numpy as np
 import pandas as pd
 
-movie_data = pd.read_csv('tmdb-movies.csv')
-
 
 def data_info(dataframe):
     """
@@ -54,6 +52,7 @@ def data_cleaning(dataframe):
 
     """
     # getting information about the data before cleaning
+    print('Here is the information on the data before we clean it:')
     data_info(dataframe)
 
     # list of columns that needs to be deleted
@@ -81,6 +80,7 @@ def data_cleaning(dataframe):
     dataframe.rename(columns={'budget': 'budget(US-Dollars)', 'revenue': 'revenue(US-Dollars)'})
 
     # getting information about the data after cleaning
+    print('Here is the information on the data after we clean it: ')
     data_info(dataframe)
 
     return dataframe

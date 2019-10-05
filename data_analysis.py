@@ -12,7 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import pandas as pd
+
 import data_clean as dc
+
+movie_data = pd.read_csv('tmdb-movies.csv')
 
 if __name__ == '__main__':
     # data_info(movie_data)
