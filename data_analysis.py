@@ -14,10 +14,9 @@
 
 import pandas as pd
 
-import data_clean as dc
+from data_clean import data_cleaning
 
 movie_data = pd.read_csv('tmdb-movies.csv')
 
 if __name__ == '__main__':
-    # data_info(movie_data)
-    dc.data_cleaning(movie_data)
+    movie_data_cleaned = data_cleaning(movie_data)

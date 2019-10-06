@@ -27,17 +27,17 @@ def data_info(dataframe):
     info = dataframe.info()
     # description of the data
     description = dataframe.describe()
-    # view first five rows of the dataframe
-    data_view = dataframe.head()
     # data type of columns
     data_type = dataframe.dtypes
+    # view first five rows of the dataframe
+    data_view = dataframe.head()
     # shape of the dataframe before cleaning
     rows, col = dataframe.shape
 
     print(info)
     print(description)
-    print(data_view)
     print(data_type)
+    print(data_view)
     # since 'rows' includes count of a header, we need to remove its count.
     print('We have {} total entries of movies and {} columns/features of it.\n'.format(rows - 1, col))
 
