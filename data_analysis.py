@@ -12,8 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+import seaborn as sns
 
 from data_clean import data_cleaning
 
@@ -63,8 +65,7 @@ def get_statistics(dataframe):
     :param dataframe: cleaned data passed for analysis
     """
     # assigning a new column which will hold the profit values of each movie
-    dataframe.insert(2, 'profit(US-Dollars)', dataframe['revenue(US-Dollars)'] - dataframe['budget('
-                                                                                           'US-Dollars)'])
+    dataframe.insert(2, 'profit(US-Dollars)', dataframe['revenue(US-Dollars)'] - dataframe['budget(US-Dollars)'])
     # changing the data type of the column to float for consistency
     dataframe['profit(US-Dollars)'] = dataframe['profit(US-Dollars)'].apply(np.float64)
 
@@ -80,8 +81,46 @@ def get_statistics(dataframe):
     # movies with largest and smallest revenue
     print(get_highest_lowest(dataframe, 'revenue(US-Dollars)'))
 
+    get_runtime(dataframe)
+
+
+def get_runtime(dataframe):
+    """
+    This function gets runtime average of all movies including graphs for runtime distribution, swarmplot and box plot
+    for deeper insights
+
+    Args:
+        dataframe: data containing runtime for analysis
+    """
     # average runtime of all movies
     print(get_average(dataframe, 'runtime'))
+
+    # gives styles to background
+    sns.set_style('darkgrid')
+    # changing the label size
+    plt.rc('xtick', labelsize=10)
+    plt.rc('ytick', labelsize=10)
+    plt.figure(figsize=(9, 6), dpi=100)
+    plt.xlabel('Runtime of Movies', fontsize=15)
+    plt.ylabel('Number of Movies', fontsize=15)
+    plt.title('Runtime distribution of all the movies', fontsize=18)
+    # plotting runtime distribution of all movies using a histogram plot
+    plt.hist(movie_data['runtime'], rwidth=0.9, bins=31)
+    # displays the plot
+    plt.show()
+
+    # plotting interquartile range of movie runtime using box plot
+    plt.figure(figsize=(9, 7), dpi=105)
+    sns.boxplot(movie_data['runtime'], linewidth=3)
+    plt.show()
+
+    # plotting swarmplot showing all the data points
+    plt.figure(figsize=(10, 5), dpi=105)
+    sns.swarmplot(movie_data['runtime'], color='grey')
+    plt.show()
+
+    # key insights on runtime
+    movie_data_cleaned['runtime'].describe()
 
 
 if __name__ == '__main__':
