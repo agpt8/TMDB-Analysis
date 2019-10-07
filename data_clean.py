@@ -21,7 +21,8 @@ def data_info(dataframe):
     Provides general information about the dataframe like shape, data types of the columns, mean, standard deviation,
     inter quartile ranges, minimum, maximum. etc.
 
-    :param dataframe: data passed for assessment
+    Args:
+        dataframe: data passed for assessment
     """
     # general info about the dataframe
     info = dataframe.info()
@@ -47,9 +48,10 @@ def data_cleaning(dataframe):
     This function cleans the data for further analysis. Cleaning includes
     removing duplicates, removing null values and deleting unnecessary columns.
 
-    :param dataframe: data passed for cleaning
-    :return: cleaned dataframe
-
+    Args:
+        dataframe: data passed for cleaning
+    Returns:
+        cleaned dataframe
     """
     # getting information about the data before cleaning
     print('Here is the information on the data before we clean it:')
