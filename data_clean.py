@@ -61,26 +61,26 @@ def data_cleaning(dataframe):
     dataframe = dataframe.drop(del_col, axis=1)
 
     # dropping duplicate rows but will keep the first one
-    dataframe.drop_duplicates(keep='first')
+    dataframe = dataframe.drop_duplicates()
 
     # list of column names that needs to be checked for 0
     check_row = ['budget', 'revenue']
     # this will replace the value of '0' to NaN of columns given in the list
     dataframe[check_row] = dataframe[check_row].replace(0, np.NaN)
     # now we will drop any row which has NaN values in any of the column of the list (check_row)
-    dataframe.dropna(subset=check_row)
+    dataframe = dataframe.dropna(subset=check_row)
 
     # replacing 0 with NaN of runtime column of the dataframe
     dataframe['runtime'] = dataframe['runtime'].replace(0, np.NaN)
 
     # changing data type of `release_date` column from string to datetime
-    dataframe.release_date = pd.to_datetime(dataframe['release_date'])
+    dataframe['release_date'] = pd.to_datetime(dataframe['release_date'])
 
     # renaming `budget` and `revenue` columns to include currency (assuming US dollars)
-    dataframe.rename(columns={'budget': 'budget(US-Dollars)', 'revenue': 'revenue(US-Dollars)'})
+    dataframe.rename(columns={'budget': 'budget(US-Dollars)', 'revenue': 'revenue(US-Dollars)'}, inplace=True)
 
     # getting information about the data after cleaning
-    print('Here is the information on the data after we clean it: ')
+    print('Here is the information on the data after we clean it:\n')
     data_info(dataframe)
 
     return dataframe
