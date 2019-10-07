@@ -19,8 +19,6 @@ import seaborn as sns
 
 from data_clean import data_cleaning
 
-movie_data = pd.read_csv('tmdb-movies.csv')
-
 
 def get_highest_lowest(dataframe, column_name):
     """
@@ -128,9 +126,9 @@ def profits_each_year(dataframe):
     profits_per_year.tail()
 
 
-def get_statistics(dataframe):
+def general_statistics(dataframe):
     """
-    This function infer various statistics about the cleaned data frame for exploratory purposes.
+    This function calculates general statistics about the cleaned data frame for exploratory purposes.
     See README.md for more details
 
     Args:
@@ -160,6 +158,80 @@ def get_statistics(dataframe):
     profits_each_year(dataframe)
 
 
+def get_profit_average(dataframe, column_name):
+    """
+    This function calculates average of specified column name for most profitable movies
+
+    Args:
+        dataframe: data containing most profitable movies
+        column_name: column for which average is calculated
+
+    Returns: average of column specified
+    """
+    return dataframe[column_name].mean()
+
+
+def get_column_count(dataframe, column_name):
+    """
+    This function calculate count of specified column elements
+
+    Args:
+        dataframe: data in which column is present
+        column_name: column containing the elements for which count is calculated
+    Returns:
+        count of elements
+    """
+    # will take a column, and separate the string by '|'
+    all_data = dataframe[column_name].str.cat(sep='|')
+
+    # giving pandas series and storing the values separately
+    all_data = pd.Series(all_data.split('|'))
+
+    count = all_data.value_counts()
+
+    return count
+
+
+def specific_statistics(dataframe):
+    """
+    This function calculates specific statistics of most successful movies.
+
+    Args:
+        dataframe: cleaned data passed for analysis
+    """
+    # assigning new dataframe which holds values only of movies having profit $50M or more
+    profit_movie_data = movie_data[movie_data['profit(US-Dollars)'] >= 50000000]
+    # reindexing new dataframe
+    profit_movie_data.index = range(len(profit_movie_data))
+    # will initialize dataframe from 1 instead of 0
+    profit_movie_data.index += 1
+
+    # average runtime of movies which had profit of >= 50000000
+    get_profit_average(dataframe, 'runtime')
+
+    # average budget of movies which had profit of >=50000000
+    get_profit_average(dataframe, 'budget(US-Dollars')
+
+    # average revenue of movies which had profit of >=50000000
+    get_profit_average(dataframe, 'revenue(US-Dollars')
+
+    # count of movies directed by each director
+    director_count = get_column_count(dataframe, 'director')
+    print(director_count.head())
+
+    # count of cast starring in a particular movie
+    cast_count = get_column_count(dataframe, 'cast')
+    print(cast_count.head())
+
+    # count of successful movies in a particular genre
+    genre_count = get_column_count(dataframe, 'genre')
+    print(genre_count.head())
+
+
+
+
 if __name__ == '__main__':
+    movie_data = pd.read_csv('tmdb-movies.csv')
     movie_data_cleaned = data_cleaning(movie_data)
-    get_statistics(movie_data_cleaned)
+    general_statistics(movie_data_cleaned)
+    specific_statistics(movie_data_cleaned)
