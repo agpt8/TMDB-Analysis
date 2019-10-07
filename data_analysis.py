@@ -26,9 +26,11 @@ def get_highest_lowest(dataframe, column_name):
     """
     This function calculates highest and lowest values of columns specified in the argument
 
-    :param dataframe: dataframe from which values are taken
-    :param column_name: column name for which highest and values are to be calculated
-    :return: concatenated data frame containing highest and lowest calculated values
+    Args:
+        dataframe: dataframe from which values are taken
+        column_name: column name for which highest and values are to be calculated
+    Returns:
+        concatenated data frame containing highest and lowest calculated values
     """
     # taking the index value of the highest number in profit column
     highest_id = dataframe[column_name].idxmax()
@@ -50,38 +52,13 @@ def get_average(dataframe, column_name):
     """
     This function calculates and returns average of the column specified
 
-    :param dataframe: dataframe from which values are taken
-    :param column_name: column name for which average is calculated
-    :return: average value of the column
+    Args:
+        dataframe: dataframe from which values are taken
+        column_name: column name for which average is calculated
+    Returns:
+        average value of the column
     """
     return dataframe[column_name].mean()
-
-
-def get_statistics(dataframe):
-    """
-    This function infer various statistics about the cleaned data frame for exploratory purposes.
-    See README.md for more details
-
-    :param dataframe: cleaned data passed for analysis
-    """
-    # assigning a new column which will hold the profit values of each movie
-    dataframe.insert(2, 'profit(US-Dollars)', dataframe['revenue(US-Dollars)'] - dataframe['budget(US-Dollars)'])
-    # changing the data type of the column to float for consistency
-    dataframe['profit(US-Dollars)'] = dataframe['profit(US-Dollars)'].apply(np.float64)
-
-    # movie with most and least earned profit
-    print(get_highest_lowest(dataframe, 'profit(US-Dollars)'))
-
-    # movies with longest and shortest runtime
-    print(get_highest_lowest(dataframe, 'runtime'))
-
-    # movies with largest and smallest budget
-    print(get_highest_lowest(dataframe, 'budget(US-Dollars)'))
-
-    # movies with largest and smallest revenue
-    print(get_highest_lowest(dataframe, 'revenue(US-Dollars)'))
-
-    get_runtime(dataframe)
 
 
 def get_runtime(dataframe):
@@ -104,6 +81,7 @@ def get_runtime(dataframe):
     plt.xlabel('Runtime of Movies', fontsize=15)
     plt.ylabel('Number of Movies', fontsize=15)
     plt.title('Runtime distribution of all the movies', fontsize=18)
+
     # plotting runtime distribution of all movies using a histogram plot
     plt.hist(movie_data['runtime'], rwidth=0.9, bins=31)
     # displays the plot
@@ -116,11 +94,70 @@ def get_runtime(dataframe):
 
     # plotting swarmplot showing all the data points
     plt.figure(figsize=(10, 5), dpi=105)
-    sns.swarmplot(movie_data['runtime'], color='grey')
+    sns.swarmplot(data=movie_data['runtime'], color='red')
     plt.show()
 
     # key insights on runtime
     movie_data_cleaned['runtime'].describe()
+
+
+def profits_each_year(dataframe):
+    """
+    This function return profits made by movies in each year
+
+    Args:
+        dataframe: data containing release year and profits made by movies
+    """
+    # Since we want to know the profits of movies for every year we need to group all the movies for those years
+    profits_per_year = movie_data.groupby('release_year')['profit_(in_US_Dollars)'].sum()
+
+    # giving the figure size(width, height)
+    plt.figure(figsize=(12, 6), dpi=130)
+    plt.xlabel('Release Year of Movies', fontsize=12)
+    plt.ylabel('Total Profits made by Movies', fontsize=12)
+    plt.title('Calculating Total Profits made by all movies in year which it released.')
+    # using a line plot
+    plt.plot(profits_per_year)
+    plt.show()
+
+    # shows which year made the highest profit
+    profits_per_year.idxmax()
+
+    # using a dataFrame just to get a clean and better visual output
+    profits_per_year = pd.DataFrame(profits_per_year)
+    profits_per_year.tail()
+
+
+def get_statistics(dataframe):
+    """
+    This function infer various statistics about the cleaned data frame for exploratory purposes.
+    See README.md for more details
+
+    Args:
+        dataframe: cleaned data passed for analysis
+    """
+    # assigning a new column which will hold the profit values of each movie
+    dataframe.insert(2, 'profit(US-Dollars)', dataframe['revenue(US-Dollars)'] - dataframe['budget(US-Dollars)'])
+    # changing the data type of the column to float for consistency
+    dataframe['profit(US-Dollars)'] = dataframe['profit(US-Dollars)'].apply(np.float64)
+
+    # movie with most and least earned profit
+    print(get_highest_lowest(dataframe, 'profit(US-Dollars)'))
+
+    # movies with longest and shortest runtime
+    print(get_highest_lowest(dataframe, 'runtime'))
+
+    # movies with largest and smallest budget
+    print(get_highest_lowest(dataframe, 'budget(US-Dollars)'))
+
+    # movies with largest and smallest revenue
+    print(get_highest_lowest(dataframe, 'revenue(US-Dollars)'))
+
+    # average runtime of all movies
+    get_runtime(dataframe)
+
+    # profits made by movies in each year
+    profits_each_year(dataframe)
 
 
 if __name__ == '__main__':
