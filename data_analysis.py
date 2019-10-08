@@ -214,6 +214,7 @@ def successful_genre(dataframe):
 def highest_movie_month(dataframe):
     """
     This function calculates highest number of movies in a particular month
+
     Args:
         dataframe: data containing all the months and number of movies
     """
@@ -243,6 +244,7 @@ def highest_movie_month(dataframe):
 def most_profit_month(dataframe):
     """
     This function returns the month which made most profit
+
     Args:
         dataframe: data containing month and number of movies
     """
@@ -311,6 +313,7 @@ def specific_statistics(dataframe):
 def movie_production_trend(dataframe):
     """
     This function analyse the trend movie production has taken over the years
+
     Args:
         dataframe: data containing movie release years
     """
@@ -328,10 +331,11 @@ def movie_production_trend(dataframe):
 def highest_grossing_movies(dataframe):
     """
     This function gets the top 20 highest grossing movies
+
     Args:
         dataframe: data containing movies and their revenues
     """
-    sorted_revenue = dataframe['revenue(US-Dollars'].sort_values(ascending=False)[:20]
+    sorted_revenue = dataframe['revenue(US-Dollars)'].sort_values(ascending=False)[:20]
     high_grossing = pd.DataFrame()
     # List of top 20 highest grossing movies and their revenue
     print(high_grossing)
@@ -349,9 +353,35 @@ def highest_grossing_movies(dataframe):
     plt.show()
 
 
+def most_expensive_movies(dataframe):
+    """
+    This function gets top 20 most expensive movies
+
+    Args:
+        dataframe: data containing movies and their budget
+    """
+    sorted_budget = dataframe['budget(US-Dollars)'].sort_values(ascending=False)[:20]
+    high_budget = pd.DataFrame()
+    # List of top 20 most expensive movies and their revenue
+    print(high_budget)
+    titles_exp = []
+    budgets = []
+    for i in sorted_budget.index:
+        titles_exp.append(dataframe.loc[i, 'original_title'])
+        budgets.append(sorted_budget.loc[i])
+    high_budget['Titles'] = titles_exp
+    high_budget['Budgets'] = budgets
+    high_budget.set_index('Titles', inplace=True)
+    high_budget.plot(kind='bar', figsize=(8, 8))
+    plt.title('Top 20 most expensive movies (1960 - 2015) ')
+    plt.ylabel('Budget in 100\'s of million ($)')
+    plt.show()
+
+
 def general_analysis(dataframe):
     """
     This function gets general analysis and correlation between various factors
+
     Args:
         dataframe: cleaned data passed for analysis
     """
@@ -360,6 +390,9 @@ def general_analysis(dataframe):
 
     # top 20 highest grossing movies
     highest_movie_month(dataframe)
+
+    # top 20 most expensive movies
+    most_expensive_movies(dataframe)
 
 
 if __name__ == '__main__':
