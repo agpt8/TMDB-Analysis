@@ -192,6 +192,81 @@ def get_column_count(dataframe, column_name):
     return count
 
 
+def successful_genre(dataframe):
+    """
+    This function counts number of movies in a particular genre and plots it in a bar graph
+
+    Args:
+        dataframe: data containing the count of movies
+    """
+    genre_count = get_column_count(dataframe, 'genre')
+    print(genre_count.head())
+
+    genre_count.sort_values(ascending=True, inplace=True)
+
+    successful_genre_graph = genre_count.plot.barh(color='#007482', fontsize=15)
+    successful_genre_graph.set(title='The Most filmed genres')
+    successful_genre_graph.set_xlabel('Number of Movies', fontsize='18')
+    successful_genre_graph.figure.set_size_inches(12, 10)
+    plt.show()
+
+
+def highest_movie_month(dataframe):
+    """
+    This function calculates highest number of movies in a particular month
+    Args:
+        dataframe: data containing all the months and number of movies
+    """
+    # grouping all of the months of years and then calculate the profits of those months
+    index_release_date = dataframe.set_index('release_date')
+    # now we need to group all the data by month, since release date is in form of index, we extract month from it
+    group_index = index_release_date.groupby([index_release_date.index.month])
+
+    monthly_movie_count = group_index['profit(US-Dollars)'].count()
+
+    monthly_movie_count = pd.DataFrame(monthly_movie_count)
+
+    month_list = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October',
+                  'November', 'December']
+
+    monthly_movie_count_bar = sns.barplot(x=monthly_movie_count.index, y=monthly_movie_count['profit(US-Dollars)'],
+                                          data=monthly_movie_count)
+    monthly_movie_count_bar.figure.set_size_inches(15, 8)
+    monthly_movie_count_bar.axes.set_title('Number of Movies released in each month', fontsize=25, alpha=0.6)
+    monthly_movie_count_bar.set_xlabel("Months", fontsize=25)
+    monthly_movie_count_bar.set_ylabel("Number of Movies", fontsize=35)
+    monthly_movie_count_bar.tick_params(labelsize=15, labelcolor="black")
+    monthly_movie_count_bar.set_xticklabels(month_list, rotation=30, size=18)
+    plt.show()
+
+
+def most_profit_month(dataframe):
+    """
+    This function returns the month which made most profit
+    Args:
+        dataframe: data containing month and number of movies
+    """
+    index_release_date = dataframe.set_index('release_date')
+    group_index = index_release_date.groupby([index_release_date.index.month])
+    monthly_profit = group_index['profit(US-Dollars)'].sum()
+
+    monthly_profit = pd.DataFrame(monthly_profit)
+
+    monthly_profit_bar = sns.barplot(x=monthly_profit.index, y=monthly_profit['profit(US-Dollars)'],
+                                     data=monthly_profit)
+
+    month_list = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October',
+                  'November', 'December']
+
+    monthly_profit_bar.figure.set_size_inches(15, 8)
+    monthly_profit_bar.axes.set_title('Profits made by movies at their released months', fontsize=25, alpha=0.6)
+    monthly_profit_bar.set_xlabel("Months", fontsize=25)
+    monthly_profit_bar.set_ylabel("Profits", fontsize=35)
+    monthly_profit_bar.tick_params(labelsize=15, labelcolor="black")
+    monthly_profit_bar.set_xticklabels(month_list, rotation=30, size=18)
+    plt.show()
+
+
 def specific_statistics(dataframe):
     """
     This function calculates specific statistics of most successful movies.
@@ -224,11 +299,13 @@ def specific_statistics(dataframe):
     print(cast_count.head())
 
     # count of successful movies in a particular genre
-    genre_count = get_column_count(dataframe, 'genre')
-    print(genre_count.head())
+    successful_genre(dataframe)
 
+    # count of movies in a month
+    highest_movie_month(dataframe)
 
-
+    # most profitable month
+    most_profit_month(dataframe)
 
 if __name__ == '__main__':
     movie_data = pd.read_csv('tmdb-movies.csv')
