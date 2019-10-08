@@ -90,10 +90,10 @@ def get_runtime(dataframe):
     sns.boxplot(movie_data['runtime'], linewidth=3)
     plt.show()
 
-    # plotting swarmplot showing all the data points
-    plt.figure(figsize=(10, 5), dpi=105)
-    sns.swarmplot(data=movie_data['runtime'], color='red')
-    plt.show()
+    # # plotting swarmplot showing all the data points
+    # plt.figure(figsize=(9, 7), dpi=105)
+    # sns.swarmplot(data=movie_data['runtime'], color='red')
+    # plt.show()
 
     # key insights on runtime
     movie_data_cleaned['runtime'].describe()
@@ -107,7 +107,7 @@ def profits_each_year(dataframe):
         dataframe: data containing release year and profits made by movies
     """
     # Since we want to know the profits of movies for every year we need to group all the movies for those years
-    profits_per_year = movie_data.groupby('release_year')['profit_(in_US_Dollars)'].sum()
+    profits_per_year = dataframe.groupby('release_year')['profit(US-Dollars)'].sum()
 
     # giving the figure size(width, height)
     plt.figure(figsize=(12, 6), dpi=130)
@@ -199,7 +199,7 @@ def successful_genre(dataframe):
     Args:
         dataframe: data containing the count of movies
     """
-    genre_count = get_column_count(dataframe, 'genre')
+    genre_count = get_column_count(dataframe, 'genres')
     print(genre_count.head())
 
     genre_count.sort_values(ascending=True, inplace=True)
@@ -275,7 +275,7 @@ def specific_statistics(dataframe):
         dataframe: cleaned data passed for analysis
     """
     # assigning new dataframe which holds values only of movies having profit $50M or more
-    profit_movie_data = movie_data[movie_data['profit(US-Dollars)'] >= 50000000]
+    profit_movie_data = dataframe[dataframe['profit(US-Dollars)'] >= 50000000]
     # reindexing new dataframe
     profit_movie_data.index = range(len(profit_movie_data))
     # will initialize dataframe from 1 instead of 0
@@ -285,10 +285,10 @@ def specific_statistics(dataframe):
     get_profit_average(dataframe, 'runtime')
 
     # average budget of movies which had profit of >=50000000
-    get_profit_average(dataframe, 'budget(US-Dollars')
+    get_profit_average(dataframe, 'budget(US-Dollars)')
 
     # average revenue of movies which had profit of >=50000000
-    get_profit_average(dataframe, 'revenue(US-Dollars')
+    get_profit_average(dataframe, 'revenue(US-Dollars)')
 
     # count of movies directed by each director
     director_count = get_column_count(dataframe, 'director')
@@ -306,6 +306,7 @@ def specific_statistics(dataframe):
 
     # most profitable month
     most_profit_month(dataframe)
+
 
 if __name__ == '__main__':
     movie_data = pd.read_csv('tmdb-movies.csv')
