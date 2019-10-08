@@ -308,8 +308,63 @@ def specific_statistics(dataframe):
     most_profit_month(dataframe)
 
 
+def movie_production_trend(dataframe):
+    """
+    This function analyse the trend movie production has taken over the years
+    Args:
+        dataframe: data containing movie release years
+    """
+    # Number of movies produced each year
+    movies_per_year = dataframe['release_year'].value_counts().sort_index()
+    # Years with maximum and minimum movie production
+    print(movies_per_year.idxmax(), movies_per_year.idxmin())
+    plt.title('Movie production trend over the years')
+    plt.xlabel('Year')
+    plt.ylabel('Number of movies released')
+    plt.plot(movies_per_year)
+    plt.show()
+
+
+def highest_grossing_movies(dataframe):
+    """
+    This function gets the top 20 highest grossing movies
+    Args:
+        dataframe: data containing movies and their revenues
+    """
+    sorted_revenue = dataframe['revenue(US-Dollars'].sort_values(ascending=False)[:20]
+    high_grossing = pd.DataFrame()
+    # List of top 20 highest grossing movies and their revenue
+    print(high_grossing)
+    titles = []
+    revenues = []
+    for i in sorted_revenue.index:
+        titles.append(dataframe.loc[i, 'original_title'])
+        revenues.append(sorted_revenue.loc[i])
+    high_grossing['Titles'] = titles
+    high_grossing['Revenues'] = revenues
+    high_grossing.set_index('Titles', inplace=True)
+    high_grossing.plot(kind='bar', figsize=(8, 8))
+    plt.title('Top 20 highest grossing movies (1960 - 2015) ')
+    plt.ylabel('Revenue in billions ($)')
+    plt.show()
+
+
+def general_analysis(dataframe):
+    """
+    This function gets general analysis and correlation between various factors
+    Args:
+        dataframe: cleaned data passed for analysis
+    """
+    # movie production trend over the years
+    movie_production_trend(dataframe)
+
+    # top 20 highest grossing movies
+    highest_movie_month(dataframe)
+
+
 if __name__ == '__main__':
     movie_data = pd.read_csv('tmdb-movies.csv')
     movie_data_cleaned = data_cleaning(movie_data)
     general_statistics(movie_data_cleaned)
     specific_statistics(movie_data_cleaned)
+    general_analysis(movie_data_cleaned)
