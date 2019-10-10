@@ -23,6 +23,7 @@ def data_info(dataframe):
 
     Args:
         dataframe: data passed for assessment
+
     """
     # general info about the dataframe
     info = dataframe.info()
@@ -50,15 +51,18 @@ def data_cleaning(dataframe):
 
     Args:
         dataframe: data passed for cleaning
+
     Returns:
         cleaned dataframe
+
     """
     # getting information about the data before cleaning
     print('Here is the information on the data before we clean it:')
     data_info(dataframe)
 
     # list of columns that needs to be deleted
-    del_col = ['id', 'imdb_id', 'budget_adj', 'revenue_adj', 'homepage', 'keywords', 'overview']
+    del_col = ['id', 'imdb_id', 'popularity', 'budget_adj', 'revenue_adj', 'homepage', 'keywords', 'overview',
+               'production_companies', 'vote_count', 'vote_average']
     # deleting the columns from the database
     dataframe = dataframe.drop(del_col, axis=1)
 
