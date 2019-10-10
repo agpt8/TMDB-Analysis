@@ -378,6 +378,61 @@ def most_expensive_movies(dataframe):
     plt.show()
 
 
+def budget_revenue_corr(dataframe):
+    """
+    This function plots correlation between budget and revenue
+
+    Args:
+        dataframe: data containing budget and revenue of movies
+
+    """
+    dataframe.plot(x='budget(US-Dollars', y='revenue(US-Dollars)', kind='scatter', figsize=(8, 8))
+    plt.title('Budget vs Revenue')
+    plt.xlabel('Budget in 100s of million ($)')
+    plt.ylabel('Revenue in billions ($)')
+    plt.show()
+    person_correlation_coeff = dataframe['budget(US-Dollars)'].corr(dataframe['revenue(US-Dollars)'], method='pearson')
+    print(person_correlation_coeff)
+
+
+def genre_runtime(dataframe):
+    """
+    This function shows what run times are asssociated with genres
+
+    Args:
+        dataframe: data containing runtimes and genres
+
+    """
+    # Drop rows with null values in genre and director columns
+    dataframe.dropna(subset=['genres'], inplace=True)
+
+    # Converting the 'genre' column into a list of genres by splitting at the pipe symbol
+    dataframe['genres'] = np.where((dataframe['genres'].str.contains('|')), dataframe['genres'].str.split('|'),
+                                   dataframe['genres'])
+
+    # Making sure every row has data as a list, even if only one genre is present
+    dataframe.loc[:, 'genres'] = dataframe.genres.apply(np.atleast_1d)
+
+    # Horizontally stacking all the lists from all rows into one big list
+    all_genres = np.hstack(dataframe.genres)
+
+    # Repeating the runtime as many times as the length of list genre and merging it all into one list
+    all_runtimes = []
+    for runtime, genre in dataframe[['runtime', 'genres']].values:
+        all_runtimes += [runtime] * len(genre)
+
+    # Assigning the merged lists / arrays to a new dataframe
+    a = pd.DataFrame({'genre': all_genres, 'runtime': all_runtimes})
+
+    # Group by genre and find the average of run times sorted in ascending order
+    runtime_by_genre = a.sort_values(['runtime']).groupby('genre')['runtime'].mean()
+    runtime_by_genre.sort_values().plot(kind='bar')
+    plt.title('Average run time for each genre')
+    plt.ylabel('Run time (mins)')
+    plt.xlabel('Genre')
+    plt.show()
+
+
 def general_analysis(dataframe):
     """
     This function gets general analysis and correlation between various factors
@@ -393,6 +448,12 @@ def general_analysis(dataframe):
 
     # top 20 most expensive movies
     most_expensive_movies(dataframe)
+
+    # budget-revenue correlation
+    budget_revenue_corr(dataframe)
+
+    # runtime associated with genre
+    genre_runtime(dataframe)
 
 
 if __name__ == '__main__':
