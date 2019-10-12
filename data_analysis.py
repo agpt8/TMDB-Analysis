@@ -69,7 +69,7 @@ def get_runtime(dataframe):
     for deeper insights
 
     Args:
-        dataframe: cleaned data containing movie runtime for analysis
+        dataframe: cleaned dataset containing movie runtime for analysis
 
     """
     # average runtime of all movies
@@ -100,25 +100,26 @@ def profits_each_year(dataframe):
     This function return profits made by movies in each year
 
     Args:
-        dataframe: data containing release year and profits made by movies
+        dataframe: cleaned dataset containing release year and profits made by movies
+
     """
     # Since we want to know the profits of movies for every year we need to group all the movies for those years
     profits_per_year = dataframe.groupby('release_year')['profit(US-Dollars)'].sum()
 
     # giving the figure size(width, height)
-    plt.figure(figsize=(12, 6), dpi=130)
-    plt.xlabel('Release Year of Movies', fontsize=12)
-    plt.ylabel('Total Profits made by Movies', fontsize=12)
+    plt.xlabel('Release Year of Movies')
+    plt.ylabel('Total Profits made by Movies')
     plt.title('Calculating Total Profits made by all movies in year which it released.')
     # using a line plot
     plt.plot(profits_per_year)
     plt.show()
 
     # shows which year made the highest profit
-    profits_per_year.idxmax()
+    print('The year which made most profit is: {}'.format(profits_per_year.idxmax()))
 
     # using a dataFrame just to get a clean and better visual output
     profits_per_year = pd.DataFrame(profits_per_year)
+    print('Profits made by movies each year:\n')
     profits_per_year.tail()
 
 
@@ -129,6 +130,7 @@ def general_statistics(dataframe):
 
     Args:
         dataframe: cleaned data passed for analysis
+
     """
     # assigning a new column which will hold the profit values of each movie
     dataframe.insert(2, 'profit(US-Dollars)', dataframe['revenue(US-Dollars)'] - dataframe['budget(US-Dollars)'])
@@ -136,15 +138,19 @@ def general_statistics(dataframe):
     dataframe['profit(US-Dollars)'] = dataframe['profit(US-Dollars)'].apply(np.float64)
 
     # movie with most and least earned profit
+    print('Movies that earned most and least profit:\n')
     print(get_highest_lowest(dataframe, 'profit(US-Dollars)'))
 
     # movies with longest and shortest runtime
+    print('Movies which have longest and shortest runtime:\n')
     print(get_highest_lowest(dataframe, 'runtime'))
 
     # movies with largest and smallest budget
+    print('Movies that had largest and smallest budget:\n')
     print(get_highest_lowest(dataframe, 'budget(US-Dollars)'))
 
     # movies with largest and smallest revenue
+    print('Movies which had generated largest and smallest revenue:\n')
     print(get_highest_lowest(dataframe, 'revenue(US-Dollars)'))
 
     # average runtime of all movies
@@ -456,5 +462,5 @@ if __name__ == '__main__':
     movie_data = pd.read_csv('tmdb-movies.csv')
     movie_data_cleaned = data_cleaning(movie_data)
     general_statistics(movie_data_cleaned)
-    specific_statistics(movie_data_cleaned)
-    general_analysis(movie_data_cleaned)
+    # specific_statistics(movie_data_cleaned)
+    # general_analysis(movie_data_cleaned)
