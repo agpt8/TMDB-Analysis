@@ -160,28 +160,17 @@ def general_statistics(dataframe):
     profits_each_year(dataframe)
 
 
-def get_profit_average(dataframe, column_name):
-    """
-    This function calculates average of specified column name for most profitable movies
-
-    Args:
-        dataframe: data containing most profitable movies
-        column_name: column for which average is calculated
-
-    Returns: average of column specified
-    """
-    return dataframe[column_name].mean()
-
-
 def get_column_count(dataframe, column_name):
     """
     This function calculate count of specified column elements
 
     Args:
-        dataframe: data in which column is present
+        dataframe: cleaned dataset
         column_name: column containing the elements for which count is calculated
+
     Returns:
         count of elements
+
     """
     # will take a column, and separate the string by '|'
     all_data = dataframe[column_name].str.cat(sep='|')
@@ -199,17 +188,18 @@ def successful_genre(dataframe):
     This function counts number of movies in a particular genre and plots it in a bar graph
 
     Args:
-        dataframe: data containing the count of movies
+        dataframe: cleaned dataset
+
     """
     genre_count = get_column_count(dataframe, 'genres')
+    print('Number of movies in each genre:\n')
     print(genre_count.head())
 
     genre_count.sort_values(ascending=True, inplace=True)
 
-    successful_genre_graph = genre_count.plot.barh(color='#007482', fontsize=15)
+    successful_genre_graph = genre_count.plot.barh(color='#007482')
     successful_genre_graph.set(title='The Most filmed genres')
-    successful_genre_graph.set_xlabel('Number of Movies', fontsize='18')
-    successful_genre_graph.figure.set_size_inches(12, 10)
+    successful_genre_graph.set_xlabel('Number of Movies')
     plt.show()
 
 
@@ -273,10 +263,11 @@ def most_profit_month(dataframe):
 
 def specific_statistics(dataframe):
     """
-    This function calculates specific statistics of most successful movies.
+    This function calculates statistics, specifically for most successful movies.
 
     Args:
         dataframe: cleaned data passed for analysis
+
     """
     # assigning new dataframe which holds values only of movies having profit $50M or more
     profit_movie_data = dataframe[dataframe['profit(US-Dollars)'] >= 50000000]
@@ -285,21 +276,25 @@ def specific_statistics(dataframe):
     # will initialize dataframe from 1 instead of 0
     profit_movie_data.index += 1
 
-    # average runtime of movies which had profit of >= 50000000
-    get_profit_average(dataframe, 'runtime')
+    # average runtime of movies which had profit >= 50000000
+    print('Average runtime of movies which had profit >= 50000000: {}'.format(get_average(dataframe, 'runtime')))
 
     # average budget of movies which had profit of >=50000000
-    get_profit_average(dataframe, 'budget(US-Dollars)')
+    print('Average budget of movies which had profit >= 50000000: {}'.format(get_average(dataframe,
+                                                                                         'budget(US-Dollars)')))
 
     # average revenue of movies which had profit of >=50000000
-    get_profit_average(dataframe, 'revenue(US-Dollars)')
+    print('Average revenue of movies which had profit >=50000000: {}'.format(get_average(dataframe,
+                                                                                         'revenue(US-Dollars)')))
 
     # count of movies directed by each director
     director_count = get_column_count(dataframe, 'director')
+    print('Count of movies directed by each directed:\n')
     print(director_count.head())
 
     # count of cast starring in a particular movie
     cast_count = get_column_count(dataframe, 'cast')
+    print('Count of cast starring in a particular movie:\n')
     print(cast_count.head())
 
     # count of successful movies in a particular genre
