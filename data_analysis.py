@@ -25,10 +25,12 @@ def get_highest_lowest(dataframe, column_name):
     This function calculates highest and lowest values of columns specified in the argument
 
     Args:
-        dataframe: dataframe from which values are taken
+        dataframe: cleaned dataset
         column_name: column name for which highest and values are to be calculated
+
     Returns:
         concatenated data frame containing highest and lowest calculated values
+
     """
     # taking the index value of the highest number in profit column
     highest_id = dataframe[column_name].idxmax()
@@ -51,10 +53,12 @@ def get_average(dataframe, column_name):
     This function calculates and returns average of the column specified
 
     Args:
-        dataframe: dataframe from which values are taken
+        dataframe: cleaned dataset
         column_name: column name for which average is calculated
+
     Returns:
         average value of the column
+
     """
     return dataframe[column_name].mean()
 
@@ -65,37 +69,29 @@ def get_runtime(dataframe):
     for deeper insights
 
     Args:
-        dataframe: data containing runtime for analysis
+        dataframe: cleaned data containing movie runtime for analysis
+
     """
     # average runtime of all movies
-    print(get_average(dataframe, 'runtime'))
+    print('Average runtime of movies is approximately: {}'.format(get_average(dataframe, 'runtime')))
 
     # gives styles to background
     sns.set_style('darkgrid')
     # changing the label size
-    plt.rc('xtick', labelsize=10)
-    plt.rc('ytick', labelsize=10)
-    plt.figure(figsize=(9, 6), dpi=100)
-    plt.xlabel('Runtime of Movies', fontsize=15)
-    plt.ylabel('Number of Movies', fontsize=15)
-    plt.title('Runtime distribution of all the movies', fontsize=18)
+    plt.xlabel('Runtime of Movies')
+    plt.ylabel('Number of Movies')
+    plt.title('Runtime distribution of all the movies')
 
     # plotting runtime distribution of all movies using a histogram plot
-    plt.hist(movie_data['runtime'], rwidth=0.9, bins=31)
-    # displays the plot
+    plt.hist(movie_data['runtime'])
     plt.show()
 
     # plotting interquartile range of movie runtime using box plot
-    plt.figure(figsize=(9, 7), dpi=105)
-    sns.boxplot(movie_data['runtime'], linewidth=3)
+    sns.boxplot(movie_data['runtime'])
     plt.show()
 
-    # # plotting swarmplot showing all the data points
-    # plt.figure(figsize=(9, 7), dpi=105)
-    # sns.swarmplot(data=movie_data['runtime'], color='red')
-    # plt.show()
-
     # key insights on runtime
+    print('Here are some key insights on movie runtime:\n')
     movie_data_cleaned['runtime'].describe()
 
 
@@ -386,7 +382,7 @@ def budget_revenue_corr(dataframe):
         dataframe: data containing budget and revenue of movies
 
     """
-    dataframe.plot(x='budget(US-Dollars', y='revenue(US-Dollars)', kind='scatter', figsize=(8, 8))
+    dataframe.plot(x='budget(US-Dollars)', y='revenue(US-Dollars)', kind='scatter', figsize=(8, 8))
     plt.title('Budget vs Revenue')
     plt.xlabel('Budget in 100s of million ($)')
     plt.ylabel('Revenue in billions ($)')
