@@ -208,7 +208,8 @@ def highest_movie_month(dataframe):
     This function calculates highest number of movies in a particular month
 
     Args:
-        dataframe: data containing all the months and number of movies
+        dataframe: cleaned dataset
+
     """
     # grouping all of the months of years and then calculate the profits of those months
     index_release_date = dataframe.set_index('release_date')
@@ -216,6 +217,7 @@ def highest_movie_month(dataframe):
     group_index = index_release_date.groupby([index_release_date.index.month])
 
     monthly_movie_count = group_index['profit(US-Dollars)'].count()
+    print('Number of movies released in each month: {}'.format(monthly_movie_count))
 
     monthly_movie_count = pd.DataFrame(monthly_movie_count)
 
@@ -224,12 +226,10 @@ def highest_movie_month(dataframe):
 
     monthly_movie_count_bar = sns.barplot(x=monthly_movie_count.index, y=monthly_movie_count['profit(US-Dollars)'],
                                           data=monthly_movie_count)
-    monthly_movie_count_bar.figure.set_size_inches(15, 8)
-    monthly_movie_count_bar.axes.set_title('Number of Movies released in each month', fontsize=25, alpha=0.6)
-    monthly_movie_count_bar.set_xlabel("Months", fontsize=25)
-    monthly_movie_count_bar.set_ylabel("Number of Movies", fontsize=35)
-    monthly_movie_count_bar.tick_params(labelsize=15, labelcolor="black")
-    monthly_movie_count_bar.set_xticklabels(month_list, rotation=30, size=18)
+    monthly_movie_count_bar.axes.set_title('Number of Movies released in each month', alpha=0.6)
+    monthly_movie_count_bar.set_xlabel("Months")
+    monthly_movie_count_bar.set_ylabel("Number of Movies")
+    monthly_movie_count_bar.set_xticklabels(month_list, rotation=30)
     plt.show()
 
 
@@ -238,11 +238,13 @@ def most_profit_month(dataframe):
     This function returns the month which made most profit
 
     Args:
-        dataframe: data containing month and number of movies
+        dataframe: cleaned dataset
+
     """
     index_release_date = dataframe.set_index('release_date')
     group_index = index_release_date.groupby([index_release_date.index.month])
     monthly_profit = group_index['profit(US-Dollars)'].sum()
+    print('Profits made by movies in their release month: {}'.format(monthly_profit))
 
     monthly_profit = pd.DataFrame(monthly_profit)
 
@@ -252,12 +254,10 @@ def most_profit_month(dataframe):
     month_list = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October',
                   'November', 'December']
 
-    monthly_profit_bar.figure.set_size_inches(15, 8)
-    monthly_profit_bar.axes.set_title('Profits made by movies at their released months', fontsize=25, alpha=0.6)
-    monthly_profit_bar.set_xlabel("Months", fontsize=25)
-    monthly_profit_bar.set_ylabel("Profits", fontsize=35)
-    monthly_profit_bar.tick_params(labelsize=15, labelcolor="black")
-    monthly_profit_bar.set_xticklabels(month_list, rotation=30, size=18)
+    monthly_profit_bar.axes.set_title('Profits made by movies at their released months', alpha=0.6)
+    monthly_profit_bar.set_xlabel("Months")
+    monthly_profit_bar.set_ylabel("Profits")
+    monthly_profit_bar.set_xticklabels(month_list, rotation=30)
     plt.show()
 
 
@@ -313,11 +313,13 @@ def movie_production_trend(dataframe):
 
     Args:
         dataframe: data containing movie release years
+
     """
     # Number of movies produced each year
     movies_per_year = dataframe['release_year'].value_counts().sort_index()
     # Years with maximum and minimum movie production
-    print(movies_per_year.idxmax(), movies_per_year.idxmin())
+    print('Year with lowest movie production: {}'.format(movies_per_year.idxmin()))
+    print('Year with highest movie production: {}'.format(movies_per_year.idxmax()))
     plt.title('Movie production trend over the years')
     plt.xlabel('Year')
     plt.ylabel('Number of movies released')
@@ -344,7 +346,7 @@ def highest_grossing_movies(dataframe):
     high_grossing['Titles'] = titles
     high_grossing['Revenues'] = revenues
     high_grossing.set_index('Titles', inplace=True)
-    high_grossing.plot(kind='bar', figsize=(8, 8))
+    high_grossing.plot(kind='bar')
     plt.title('Top 20 highest grossing movies (1960 - 2015) ')
     plt.ylabel('Revenue in billions ($)')
     plt.show()
