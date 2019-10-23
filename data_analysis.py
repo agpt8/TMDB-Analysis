@@ -25,10 +25,12 @@ def get_highest_lowest(dataframe, column_name):
     This function calculates highest and lowest values of columns specified in the argument
 
     Args:
-        dataframe: dataframe from which values are taken
+        dataframe: cleaned dataset
         column_name: column name for which highest and values are to be calculated
+
     Returns:
         concatenated data frame containing highest and lowest calculated values
+
     """
     # taking the index value of the highest number in profit column
     highest_id = dataframe[column_name].idxmax()
@@ -51,10 +53,12 @@ def get_average(dataframe, column_name):
     This function calculates and returns average of the column specified
 
     Args:
-        dataframe: dataframe from which values are taken
+        dataframe: cleaned dataset
         column_name: column name for which average is calculated
+
     Returns:
         average value of the column
+
     """
     return dataframe[column_name].mean()
 
@@ -65,37 +69,29 @@ def get_runtime(dataframe):
     for deeper insights
 
     Args:
-        dataframe: data containing runtime for analysis
+        dataframe: cleaned dataset containing movie runtime for analysis
+
     """
     # average runtime of all movies
-    print(get_average(dataframe, 'runtime'))
+    print('Average runtime of movies is approximately: {}'.format(get_average(dataframe, 'runtime')))
 
     # gives styles to background
     sns.set_style('darkgrid')
     # changing the label size
-    plt.rc('xtick', labelsize=10)
-    plt.rc('ytick', labelsize=10)
-    plt.figure(figsize=(9, 6), dpi=100)
-    plt.xlabel('Runtime of Movies', fontsize=15)
-    plt.ylabel('Number of Movies', fontsize=15)
-    plt.title('Runtime distribution of all the movies', fontsize=18)
+    plt.xlabel('Runtime of Movies')
+    plt.ylabel('Number of Movies')
+    plt.title('Runtime distribution of all the movies')
 
     # plotting runtime distribution of all movies using a histogram plot
-    plt.hist(movie_data['runtime'], rwidth=0.9, bins=31)
-    # displays the plot
+    plt.hist(movie_data['runtime'])
     plt.show()
 
     # plotting interquartile range of movie runtime using box plot
-    plt.figure(figsize=(9, 7), dpi=105)
-    sns.boxplot(movie_data['runtime'], linewidth=3)
+    sns.boxplot(movie_data['runtime'])
     plt.show()
 
-    # # plotting swarmplot showing all the data points
-    # plt.figure(figsize=(9, 7), dpi=105)
-    # sns.swarmplot(data=movie_data['runtime'], color='red')
-    # plt.show()
-
     # key insights on runtime
+    print('Here are some key insights on movie runtime:\n')
     movie_data_cleaned['runtime'].describe()
 
 
@@ -104,25 +100,26 @@ def profits_each_year(dataframe):
     This function return profits made by movies in each year
 
     Args:
-        dataframe: data containing release year and profits made by movies
+        dataframe: cleaned dataset containing release year and profits made by movies
+
     """
     # Since we want to know the profits of movies for every year we need to group all the movies for those years
     profits_per_year = dataframe.groupby('release_year')['profit(US-Dollars)'].sum()
 
     # giving the figure size(width, height)
-    plt.figure(figsize=(12, 6), dpi=130)
-    plt.xlabel('Release Year of Movies', fontsize=12)
-    plt.ylabel('Total Profits made by Movies', fontsize=12)
+    plt.xlabel('Release Year of Movies')
+    plt.ylabel('Total Profits made by Movies')
     plt.title('Calculating Total Profits made by all movies in year which it released.')
     # using a line plot
     plt.plot(profits_per_year)
     plt.show()
 
     # shows which year made the highest profit
-    profits_per_year.idxmax()
+    print('The year which made most profit is: {}'.format(profits_per_year.idxmax()))
 
     # using a dataFrame just to get a clean and better visual output
     profits_per_year = pd.DataFrame(profits_per_year)
+    print('Profits made by movies each year:\n')
     profits_per_year.tail()
 
 
@@ -133,6 +130,7 @@ def general_statistics(dataframe):
 
     Args:
         dataframe: cleaned data passed for analysis
+
     """
     # assigning a new column which will hold the profit values of each movie
     dataframe.insert(2, 'profit(US-Dollars)', dataframe['revenue(US-Dollars)'] - dataframe['budget(US-Dollars)'])
@@ -140,15 +138,19 @@ def general_statistics(dataframe):
     dataframe['profit(US-Dollars)'] = dataframe['profit(US-Dollars)'].apply(np.float64)
 
     # movie with most and least earned profit
+    print('Movies that earned most and least profit:\n')
     print(get_highest_lowest(dataframe, 'profit(US-Dollars)'))
 
     # movies with longest and shortest runtime
+    print('Movies which have longest and shortest runtime:\n')
     print(get_highest_lowest(dataframe, 'runtime'))
 
     # movies with largest and smallest budget
+    print('Movies that had largest and smallest budget:\n')
     print(get_highest_lowest(dataframe, 'budget(US-Dollars)'))
 
     # movies with largest and smallest revenue
+    print('Movies which had generated largest and smallest revenue:\n')
     print(get_highest_lowest(dataframe, 'revenue(US-Dollars)'))
 
     # average runtime of all movies
@@ -158,28 +160,17 @@ def general_statistics(dataframe):
     profits_each_year(dataframe)
 
 
-def get_profit_average(dataframe, column_name):
-    """
-    This function calculates average of specified column name for most profitable movies
-
-    Args:
-        dataframe: data containing most profitable movies
-        column_name: column for which average is calculated
-
-    Returns: average of column specified
-    """
-    return dataframe[column_name].mean()
-
-
 def get_column_count(dataframe, column_name):
     """
     This function calculate count of specified column elements
 
     Args:
-        dataframe: data in which column is present
+        dataframe: cleaned dataset
         column_name: column containing the elements for which count is calculated
+
     Returns:
         count of elements
+
     """
     # will take a column, and separate the string by '|'
     all_data = dataframe[column_name].str.cat(sep='|')
@@ -197,17 +188,18 @@ def successful_genre(dataframe):
     This function counts number of movies in a particular genre and plots it in a bar graph
 
     Args:
-        dataframe: data containing the count of movies
+        dataframe: cleaned dataset
+
     """
     genre_count = get_column_count(dataframe, 'genres')
+    print('Number of movies in each genre:\n')
     print(genre_count.head())
 
     genre_count.sort_values(ascending=True, inplace=True)
 
-    successful_genre_graph = genre_count.plot.barh(color='#007482', fontsize=15)
+    successful_genre_graph = genre_count.plot.barh(color='#007482')
     successful_genre_graph.set(title='The Most filmed genres')
-    successful_genre_graph.set_xlabel('Number of Movies', fontsize='18')
-    successful_genre_graph.figure.set_size_inches(12, 10)
+    successful_genre_graph.set_xlabel('Number of Movies')
     plt.show()
 
 
@@ -216,7 +208,8 @@ def highest_movie_month(dataframe):
     This function calculates highest number of movies in a particular month
 
     Args:
-        dataframe: data containing all the months and number of movies
+        dataframe: cleaned dataset
+
     """
     # grouping all of the months of years and then calculate the profits of those months
     index_release_date = dataframe.set_index('release_date')
@@ -224,6 +217,7 @@ def highest_movie_month(dataframe):
     group_index = index_release_date.groupby([index_release_date.index.month])
 
     monthly_movie_count = group_index['profit(US-Dollars)'].count()
+    print('Number of movies released in each month: {}'.format(monthly_movie_count))
 
     monthly_movie_count = pd.DataFrame(monthly_movie_count)
 
@@ -232,12 +226,10 @@ def highest_movie_month(dataframe):
 
     monthly_movie_count_bar = sns.barplot(x=monthly_movie_count.index, y=monthly_movie_count['profit(US-Dollars)'],
                                           data=monthly_movie_count)
-    monthly_movie_count_bar.figure.set_size_inches(15, 8)
-    monthly_movie_count_bar.axes.set_title('Number of Movies released in each month', fontsize=25, alpha=0.6)
-    monthly_movie_count_bar.set_xlabel("Months", fontsize=25)
-    monthly_movie_count_bar.set_ylabel("Number of Movies", fontsize=35)
-    monthly_movie_count_bar.tick_params(labelsize=15, labelcolor="black")
-    monthly_movie_count_bar.set_xticklabels(month_list, rotation=30, size=18)
+    monthly_movie_count_bar.axes.set_title('Number of Movies released in each month', alpha=0.6)
+    monthly_movie_count_bar.set_xlabel("Months")
+    monthly_movie_count_bar.set_ylabel("Number of Movies")
+    monthly_movie_count_bar.set_xticklabels(month_list, rotation=30)
     plt.show()
 
 
@@ -246,11 +238,13 @@ def most_profit_month(dataframe):
     This function returns the month which made most profit
 
     Args:
-        dataframe: data containing month and number of movies
+        dataframe: cleaned dataset
+
     """
     index_release_date = dataframe.set_index('release_date')
     group_index = index_release_date.groupby([index_release_date.index.month])
     monthly_profit = group_index['profit(US-Dollars)'].sum()
+    print('Profits made by movies in their release month: {}'.format(monthly_profit))
 
     monthly_profit = pd.DataFrame(monthly_profit)
 
@@ -260,21 +254,20 @@ def most_profit_month(dataframe):
     month_list = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October',
                   'November', 'December']
 
-    monthly_profit_bar.figure.set_size_inches(15, 8)
-    monthly_profit_bar.axes.set_title('Profits made by movies at their released months', fontsize=25, alpha=0.6)
-    monthly_profit_bar.set_xlabel("Months", fontsize=25)
-    monthly_profit_bar.set_ylabel("Profits", fontsize=35)
-    monthly_profit_bar.tick_params(labelsize=15, labelcolor="black")
-    monthly_profit_bar.set_xticklabels(month_list, rotation=30, size=18)
+    monthly_profit_bar.axes.set_title('Profits made by movies at their released months', alpha=0.6)
+    monthly_profit_bar.set_xlabel("Months")
+    monthly_profit_bar.set_ylabel("Profits")
+    monthly_profit_bar.set_xticklabels(month_list, rotation=30)
     plt.show()
 
 
 def specific_statistics(dataframe):
     """
-    This function calculates specific statistics of most successful movies.
+    This function calculates statistics, specifically for most successful movies.
 
     Args:
         dataframe: cleaned data passed for analysis
+
     """
     # assigning new dataframe which holds values only of movies having profit $50M or more
     profit_movie_data = dataframe[dataframe['profit(US-Dollars)'] >= 50000000]
@@ -283,21 +276,25 @@ def specific_statistics(dataframe):
     # will initialize dataframe from 1 instead of 0
     profit_movie_data.index += 1
 
-    # average runtime of movies which had profit of >= 50000000
-    get_profit_average(dataframe, 'runtime')
+    # average runtime of movies which had profit >= 50000000
+    print('Average runtime of movies which had profit >= 50000000: {}'.format(get_average(dataframe, 'runtime')))
 
     # average budget of movies which had profit of >=50000000
-    get_profit_average(dataframe, 'budget(US-Dollars)')
+    print('Average budget of movies which had profit >= 50000000: {}'.format(get_average(dataframe,
+                                                                                         'budget(US-Dollars)')))
 
     # average revenue of movies which had profit of >=50000000
-    get_profit_average(dataframe, 'revenue(US-Dollars)')
+    print('Average revenue of movies which had profit >=50000000: {}'.format(get_average(dataframe,
+                                                                                         'revenue(US-Dollars)')))
 
     # count of movies directed by each director
     director_count = get_column_count(dataframe, 'director')
+    print('Count of movies directed by each directed:\n')
     print(director_count.head())
 
     # count of cast starring in a particular movie
     cast_count = get_column_count(dataframe, 'cast')
+    print('Count of cast starring in a particular movie:\n')
     print(cast_count.head())
 
     # count of successful movies in a particular genre
@@ -315,12 +312,14 @@ def movie_production_trend(dataframe):
     This function analyse the trend movie production has taken over the years
 
     Args:
-        dataframe: data containing movie release years
+        dataframe: cleaned dataset
+
     """
     # Number of movies produced each year
     movies_per_year = dataframe['release_year'].value_counts().sort_index()
     # Years with maximum and minimum movie production
-    print(movies_per_year.idxmax(), movies_per_year.idxmin())
+    print('Year with lowest movie production: {}'.format(movies_per_year.idxmin()))
+    print('Year with highest movie production: {}'.format(movies_per_year.idxmax()))
     plt.title('Movie production trend over the years')
     plt.xlabel('Year')
     plt.ylabel('Number of movies released')
@@ -333,21 +332,26 @@ def highest_grossing_movies(dataframe):
     This function gets the top 20 highest grossing movies
 
     Args:
-        dataframe: data containing movies and their revenues
+        dataframe: cleaned dataset
+
     """
     sorted_revenue = dataframe['revenue(US-Dollars)'].sort_values(ascending=False)[:20]
     high_grossing = pd.DataFrame()
     # List of top 20 highest grossing movies and their revenue
+    print('Top 20 highest grossing movies:\n')
     print(high_grossing)
+
     titles = []
     revenues = []
     for i in sorted_revenue.index:
         titles.append(dataframe.loc[i, 'original_title'])
         revenues.append(sorted_revenue.loc[i])
+
     high_grossing['Titles'] = titles
     high_grossing['Revenues'] = revenues
+
     high_grossing.set_index('Titles', inplace=True)
-    high_grossing.plot(kind='bar', figsize=(8, 8))
+    high_grossing.plot(kind='bar')
     plt.title('Top 20 highest grossing movies (1960 - 2015) ')
     plt.ylabel('Revenue in billions ($)')
     plt.show()
@@ -358,21 +362,26 @@ def most_expensive_movies(dataframe):
     This function gets top 20 most expensive movies
 
     Args:
-        dataframe: data containing movies and their budget
+        dataframe: cleaned dataset
+
     """
     sorted_budget = dataframe['budget(US-Dollars)'].sort_values(ascending=False)[:20]
     high_budget = pd.DataFrame()
     # List of top 20 most expensive movies and their revenue
+    print('Top 20 most expensive movies of all time:\n')
     print(high_budget)
+
     titles_exp = []
     budgets = []
     for i in sorted_budget.index:
         titles_exp.append(dataframe.loc[i, 'original_title'])
         budgets.append(sorted_budget.loc[i])
+
     high_budget['Titles'] = titles_exp
     high_budget['Budgets'] = budgets
+
     high_budget.set_index('Titles', inplace=True)
-    high_budget.plot(kind='bar', figsize=(8, 8))
+    high_budget.plot(kind='bar')
     plt.title('Top 20 most expensive movies (1960 - 2015) ')
     plt.ylabel('Budget in 100\'s of million ($)')
     plt.show()
@@ -383,24 +392,24 @@ def budget_revenue_corr(dataframe):
     This function plots correlation between budget and revenue
 
     Args:
-        dataframe: data containing budget and revenue of movies
+        dataframe: cleaned dataset
 
     """
-    dataframe.plot(x='budget(US-Dollars', y='revenue(US-Dollars)', kind='scatter', figsize=(8, 8))
+    dataframe.plot(x='budget(US-Dollars)', y='revenue(US-Dollars)', kind='scatter')
     plt.title('Budget vs Revenue')
     plt.xlabel('Budget in 100s of million ($)')
     plt.ylabel('Revenue in billions ($)')
     plt.show()
     person_correlation_coeff = dataframe['budget(US-Dollars)'].corr(dataframe['revenue(US-Dollars)'], method='pearson')
-    print(person_correlation_coeff)
+    print('Correlation between budget and revenue: {}'.format(person_correlation_coeff))
 
 
 def genre_runtime(dataframe):
     """
-    This function shows what run times are asssociated with genres
+    This function shows what run times are associated with genres
 
     Args:
-        dataframe: data containing runtimes and genres
+        dataframe: cleaned dataset
 
     """
     # Drop rows with null values in genre and director columns
@@ -422,10 +431,10 @@ def genre_runtime(dataframe):
         all_runtimes += [runtime] * len(genre)
 
     # Assigning the merged lists / arrays to a new dataframe
-    a = pd.DataFrame({'genre': all_genres, 'runtime': all_runtimes})
+    genre_runtime_combined = pd.DataFrame({'genre': all_genres, 'runtime': all_runtimes})
 
     # Group by genre and find the average of run times sorted in ascending order
-    runtime_by_genre = a.sort_values(['runtime']).groupby('genre')['runtime'].mean()
+    runtime_by_genre = genre_runtime_combined.sort_values(['runtime']).groupby('genre')['runtime'].mean()
     runtime_by_genre.sort_values().plot(kind='bar')
     plt.title('Average run time for each genre')
     plt.ylabel('Run time (mins)')
@@ -460,5 +469,5 @@ if __name__ == '__main__':
     movie_data = pd.read_csv('tmdb-movies.csv')
     movie_data_cleaned = data_cleaning(movie_data)
     general_statistics(movie_data_cleaned)
-    specific_statistics(movie_data_cleaned)
-    general_analysis(movie_data_cleaned)
+    # specific_statistics(movie_data_cleaned)
+    # general_analysis(movie_data_cleaned)
