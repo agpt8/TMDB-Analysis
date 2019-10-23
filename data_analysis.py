@@ -312,7 +312,7 @@ def movie_production_trend(dataframe):
     This function analyse the trend movie production has taken over the years
 
     Args:
-        dataframe: data containing movie release years
+        dataframe: cleaned dataset
 
     """
     # Number of movies produced each year
@@ -332,19 +332,24 @@ def highest_grossing_movies(dataframe):
     This function gets the top 20 highest grossing movies
 
     Args:
-        dataframe: data containing movies and their revenues
+        dataframe: cleaned dataset
+
     """
     sorted_revenue = dataframe['revenue(US-Dollars)'].sort_values(ascending=False)[:20]
     high_grossing = pd.DataFrame()
     # List of top 20 highest grossing movies and their revenue
+    print('Top 20 highest grossing movies:\n')
     print(high_grossing)
+
     titles = []
     revenues = []
     for i in sorted_revenue.index:
         titles.append(dataframe.loc[i, 'original_title'])
         revenues.append(sorted_revenue.loc[i])
+
     high_grossing['Titles'] = titles
     high_grossing['Revenues'] = revenues
+
     high_grossing.set_index('Titles', inplace=True)
     high_grossing.plot(kind='bar')
     plt.title('Top 20 highest grossing movies (1960 - 2015) ')
@@ -357,21 +362,26 @@ def most_expensive_movies(dataframe):
     This function gets top 20 most expensive movies
 
     Args:
-        dataframe: data containing movies and their budget
+        dataframe: cleaned dataset
+
     """
     sorted_budget = dataframe['budget(US-Dollars)'].sort_values(ascending=False)[:20]
     high_budget = pd.DataFrame()
     # List of top 20 most expensive movies and their revenue
+    print('Top 20 most expensive movies of all time:\n')
     print(high_budget)
+
     titles_exp = []
     budgets = []
     for i in sorted_budget.index:
         titles_exp.append(dataframe.loc[i, 'original_title'])
         budgets.append(sorted_budget.loc[i])
+
     high_budget['Titles'] = titles_exp
     high_budget['Budgets'] = budgets
+
     high_budget.set_index('Titles', inplace=True)
-    high_budget.plot(kind='bar', figsize=(8, 8))
+    high_budget.plot(kind='bar')
     plt.title('Top 20 most expensive movies (1960 - 2015) ')
     plt.ylabel('Budget in 100\'s of million ($)')
     plt.show()
@@ -382,24 +392,24 @@ def budget_revenue_corr(dataframe):
     This function plots correlation between budget and revenue
 
     Args:
-        dataframe: data containing budget and revenue of movies
+        dataframe: cleaned dataset
 
     """
-    dataframe.plot(x='budget(US-Dollars)', y='revenue(US-Dollars)', kind='scatter', figsize=(8, 8))
+    dataframe.plot(x='budget(US-Dollars)', y='revenue(US-Dollars)', kind='scatter')
     plt.title('Budget vs Revenue')
     plt.xlabel('Budget in 100s of million ($)')
     plt.ylabel('Revenue in billions ($)')
     plt.show()
     person_correlation_coeff = dataframe['budget(US-Dollars)'].corr(dataframe['revenue(US-Dollars)'], method='pearson')
-    print(person_correlation_coeff)
+    print('Correlation between budget and revenue: {}'.format(person_correlation_coeff))
 
 
 def genre_runtime(dataframe):
     """
-    This function shows what run times are asssociated with genres
+    This function shows what run times are associated with genres
 
     Args:
-        dataframe: data containing runtimes and genres
+        dataframe: cleaned dataset
 
     """
     # Drop rows with null values in genre and director columns
@@ -421,10 +431,10 @@ def genre_runtime(dataframe):
         all_runtimes += [runtime] * len(genre)
 
     # Assigning the merged lists / arrays to a new dataframe
-    a = pd.DataFrame({'genre': all_genres, 'runtime': all_runtimes})
+    genre_runtime_combined = pd.DataFrame({'genre': all_genres, 'runtime': all_runtimes})
 
     # Group by genre and find the average of run times sorted in ascending order
-    runtime_by_genre = a.sort_values(['runtime']).groupby('genre')['runtime'].mean()
+    runtime_by_genre = genre_runtime_combined.sort_values(['runtime']).groupby('genre')['runtime'].mean()
     runtime_by_genre.sort_values().plot(kind='bar')
     plt.title('Average run time for each genre')
     plt.ylabel('Run time (mins)')
