@@ -57,7 +57,7 @@ def data_cleaning(dataframe):
 
     """
     # getting information about the data before cleaning
-    print('Here is the information on the data before we clean it:')
+    print('Here is the information on the data before we clean it: \n')
     data_info(dataframe)
 
     # list of columns that needs to be deleted
@@ -86,7 +86,7 @@ def data_cleaning(dataframe):
     dataframe.rename(columns={'budget': 'budget(US-Dollars)', 'revenue': 'revenue(US-Dollars)'}, inplace=True)
 
     # getting information about the data after cleaning
-    print('Here is the information on the data after we clean it:\n')
+    print('Here is the information on the data after we clean it: \n')
     data_info(dataframe)
 
     return dataframe
