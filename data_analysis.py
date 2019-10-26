@@ -73,11 +73,10 @@ def get_runtime(dataframe):
 
     """
     # average runtime of all movies
-    print('Average runtime of movies is approximately: {}'.format(get_average(dataframe, 'runtime')))
+    print('\nAverage runtime of movies is approximately: {}'.format(get_average(dataframe, 'runtime')))
 
     # gives styles to background
     sns.set_style('darkgrid')
-    # changing the label size
     plt.xlabel('Runtime of Movies')
     plt.ylabel('Number of Movies')
     plt.title('Runtime distribution of all the movies')
@@ -91,8 +90,8 @@ def get_runtime(dataframe):
     plt.show()
 
     # key insights on runtime
-    print('Here are some key insights on movie runtime:\n')
-    movie_data_cleaned['runtime'].describe()
+    print('\nHere are some key insights on movie runtime: ')
+    print(movie_data_cleaned['runtime'].describe())
 
 
 def profits_each_year(dataframe):
@@ -115,12 +114,12 @@ def profits_each_year(dataframe):
     plt.show()
 
     # shows which year made the highest profit
-    print('The year which made most profit is: {}'.format(profits_per_year.idxmax()))
+    print('\nThe year which made most profit is: {}'.format(profits_per_year.idxmax()))
 
     # using a dataFrame just to get a clean and better visual output
     profits_per_year = pd.DataFrame(profits_per_year)
-    print('Profits made by movies each year:\n')
-    profits_per_year.tail()
+    print('\nProfits made by movies in the last 5 years: ')
+    print(profits_per_year.tail())
 
 
 def general_statistics(dataframe):
@@ -138,19 +137,19 @@ def general_statistics(dataframe):
     dataframe['profit(US-Dollars)'] = dataframe['profit(US-Dollars)'].apply(np.float64)
 
     # movie with most and least earned profit
-    print('Movies that earned most and least profit:\n')
+    print('Movies that earned most and least profit: ')
     print(get_highest_lowest(dataframe, 'profit(US-Dollars)'))
 
     # movies with longest and shortest runtime
-    print('Movies which have longest and shortest runtime:\n')
+    print('\nMovies which have longest and shortest runtime: ')
     print(get_highest_lowest(dataframe, 'runtime'))
 
     # movies with largest and smallest budget
-    print('Movies that had largest and smallest budget:\n')
+    print('\nMovies that had largest and smallest budget: ')
     print(get_highest_lowest(dataframe, 'budget(US-Dollars)'))
 
     # movies with largest and smallest revenue
-    print('Movies which had generated largest and smallest revenue:\n')
+    print('\nMovies which had generated largest and smallest revenue: ')
     print(get_highest_lowest(dataframe, 'revenue(US-Dollars)'))
 
     # average runtime of all movies
@@ -192,7 +191,7 @@ def successful_genre(dataframe):
 
     """
     genre_count = get_column_count(dataframe, 'genres')
-    print('Number of movies in each genre:\n')
+    print('\nNumber of movies in each genre: ')
     print(genre_count.head())
 
     genre_count.sort_values(ascending=True, inplace=True)
@@ -217,9 +216,10 @@ def highest_movie_month(dataframe):
     group_index = index_release_date.groupby([index_release_date.index.month])
 
     monthly_movie_count = group_index['profit(US-Dollars)'].count()
-    print('Number of movies released in each month: {}'.format(monthly_movie_count))
 
     monthly_movie_count = pd.DataFrame(monthly_movie_count)
+    print('\nNumber of movies released in each month: ')
+    print(monthly_movie_count)
 
     month_list = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October',
                   'November', 'December']
@@ -244,9 +244,10 @@ def most_profit_month(dataframe):
     index_release_date = dataframe.set_index('release_date')
     group_index = index_release_date.groupby([index_release_date.index.month])
     monthly_profit = group_index['profit(US-Dollars)'].sum()
-    print('Profits made by movies in their release month: {}'.format(monthly_profit))
 
     monthly_profit = pd.DataFrame(monthly_profit)
+    print('\nProfits made by movies in their release month: ')
+    print(monthly_profit)
 
     monthly_profit_bar = sns.barplot(x=monthly_profit.index, y=monthly_profit['profit(US-Dollars)'],
                                      data=monthly_profit)
@@ -277,7 +278,7 @@ def specific_statistics(dataframe):
     profit_movie_data.index += 1
 
     # average runtime of movies which had profit >= 50000000
-    print('Average runtime of movies which had profit >= 50000000: {}'.format(get_average(dataframe, 'runtime')))
+    print('\nAverage runtime of movies which had profit >= 50000000: {}'.format(get_average(dataframe, 'runtime')))
 
     # average budget of movies which had profit of >=50000000
     print('Average budget of movies which had profit >= 50000000: {}'.format(get_average(dataframe,
@@ -289,12 +290,12 @@ def specific_statistics(dataframe):
 
     # count of movies directed by each director
     director_count = get_column_count(dataframe, 'director')
-    print('Count of movies directed by each directed:\n')
+    print('\nCount of movies directed by each directed: ')
     print(director_count.head())
 
     # count of cast starring in a particular movie
     cast_count = get_column_count(dataframe, 'cast')
-    print('Count of cast starring in a particular movie:\n')
+    print('\nCount of cast starring in a particular movie: ')
     print(cast_count.head())
 
     # count of successful movies in a particular genre
@@ -318,7 +319,7 @@ def movie_production_trend(dataframe):
     # Number of movies produced each year
     movies_per_year = dataframe['release_year'].value_counts().sort_index()
     # Years with maximum and minimum movie production
-    print('Year with lowest movie production: {}'.format(movies_per_year.idxmin()))
+    print('\nYear with lowest movie production: {}'.format(movies_per_year.idxmin()))
     print('Year with highest movie production: {}'.format(movies_per_year.idxmax()))
     plt.title('Movie production trend over the years')
     plt.xlabel('Year')
@@ -336,10 +337,7 @@ def highest_grossing_movies(dataframe):
 
     """
     sorted_revenue = dataframe['revenue(US-Dollars)'].sort_values(ascending=False)[:20]
-    high_grossing = pd.DataFrame()
-    # List of top 20 highest grossing movies and their revenue
-    print('Top 20 highest grossing movies:\n')
-    print(high_grossing)
+    high_grossing = pd.DataFrame(sorted_revenue)
 
     titles = []
     revenues = []
@@ -348,13 +346,17 @@ def highest_grossing_movies(dataframe):
         revenues.append(sorted_revenue.loc[i])
 
     high_grossing['Titles'] = titles
-    high_grossing['Revenues'] = revenues
+    # high_grossing['Revenues'] = revenues
 
     high_grossing.set_index('Titles', inplace=True)
     high_grossing.plot(kind='bar')
     plt.title('Top 20 highest grossing movies (1960 - 2015) ')
     plt.ylabel('Revenue in billions ($)')
     plt.show()
+
+    # List of top 20 highest grossing movies and their revenue
+    print('\nTop 20 highest grossing movies: ')
+    print(high_grossing)
 
 
 def most_expensive_movies(dataframe):
@@ -366,11 +368,7 @@ def most_expensive_movies(dataframe):
 
     """
     sorted_budget = dataframe['budget(US-Dollars)'].sort_values(ascending=False)[:20]
-    high_budget = pd.DataFrame()
-    # List of top 20 most expensive movies and their revenue
-    print('Top 20 most expensive movies of all time:\n')
-    print(high_budget)
-
+    high_budget = pd.DataFrame(sorted_budget)
     titles_exp = []
     budgets = []
     for i in sorted_budget.index:
@@ -378,13 +376,17 @@ def most_expensive_movies(dataframe):
         budgets.append(sorted_budget.loc[i])
 
     high_budget['Titles'] = titles_exp
-    high_budget['Budgets'] = budgets
+    # high_budget['Budgets'] = budgets
 
     high_budget.set_index('Titles', inplace=True)
     high_budget.plot(kind='bar')
     plt.title('Top 20 most expensive movies (1960 - 2015) ')
     plt.ylabel('Budget in 100\'s of million ($)')
     plt.show()
+
+    # List of top 20 most expensive movies and their revenue
+    print('\nTop 20 most expensive movies of all time: ')
+    print(high_budget)
 
 
 def budget_revenue_corr(dataframe):
@@ -401,7 +403,7 @@ def budget_revenue_corr(dataframe):
     plt.ylabel('Revenue in billions ($)')
     plt.show()
     person_correlation_coeff = dataframe['budget(US-Dollars)'].corr(dataframe['revenue(US-Dollars)'], method='pearson')
-    print('Correlation between budget and revenue: {}'.format(person_correlation_coeff))
+    print('\nCorrelation between budget and revenue: {}'.format(person_correlation_coeff))
 
 
 def genre_runtime(dataframe):
@@ -469,5 +471,5 @@ if __name__ == '__main__':
     movie_data = pd.read_csv('tmdb-movies.csv')
     movie_data_cleaned = data_cleaning(movie_data)
     general_statistics(movie_data_cleaned)
-    # specific_statistics(movie_data_cleaned)
-    # general_analysis(movie_data_cleaned)
+    specific_statistics(movie_data_cleaned)
+    general_analysis(movie_data_cleaned)
