@@ -108,7 +108,7 @@ def profits_each_year(dataframe):
     # giving the figure size(width, height)
     plt.xlabel('Release Year of Movies')
     plt.ylabel('Total Profits made by Movies')
-    plt.title('Calculating Total Profits made by all movies in year which it released.')
+    plt.title('Total Profits Made by Movies')
     # using a line plot
     plt.plot(profits_per_year)
     plt.show()
@@ -197,7 +197,7 @@ def successful_genre(dataframe):
     genre_count.sort_values(ascending=True, inplace=True)
 
     successful_genre_graph = genre_count.plot.barh(color='#007482')
-    successful_genre_graph.set(title='The Most filmed genres')
+    successful_genre_graph.set(title='Most Filmed Genres')
     successful_genre_graph.set_xlabel('Number of Movies')
     plt.show()
 
@@ -226,7 +226,7 @@ def highest_movie_month(dataframe):
 
     monthly_movie_count_bar = sns.barplot(x=monthly_movie_count.index, y=monthly_movie_count['profit(US-Dollars)'],
                                           data=monthly_movie_count)
-    monthly_movie_count_bar.axes.set_title('Number of Movies released in each month', alpha=0.6)
+    monthly_movie_count_bar.axes.set_title('Number of Movies Released in Each Month', alpha=0.6)
     monthly_movie_count_bar.set_xlabel("Months")
     monthly_movie_count_bar.set_ylabel("Number of Movies")
     monthly_movie_count_bar.set_xticklabels(month_list, rotation=30)
@@ -255,7 +255,7 @@ def most_profit_month(dataframe):
     month_list = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October',
                   'November', 'December']
 
-    monthly_profit_bar.axes.set_title('Profits made by movies at their released months', alpha=0.6)
+    monthly_profit_bar.axes.set_title('Profits Made by Movies in their Release Month', alpha=0.6)
     monthly_profit_bar.set_xlabel("Months")
     monthly_profit_bar.set_ylabel("Profits")
     monthly_profit_bar.set_xticklabels(month_list, rotation=30)
@@ -321,7 +321,7 @@ def movie_production_trend(dataframe):
     # Years with maximum and minimum movie production
     print('\nYear with lowest movie production: {}'.format(movies_per_year.idxmin()))
     print('Year with highest movie production: {}'.format(movies_per_year.idxmax()))
-    plt.title('Movie production trend over the years')
+    plt.title('Movie Production Trend over the Years')
     plt.xlabel('Year')
     plt.ylabel('Number of movies released')
     plt.plot(movies_per_year)
@@ -380,7 +380,7 @@ def most_expensive_movies(dataframe):
 
     high_budget.set_index('Titles', inplace=True)
     high_budget.plot(kind='bar')
-    plt.title('Top 20 most expensive movies (1960 - 2015) ')
+    plt.title('Top 20 most expensive movies (1960 - 2015)')
     plt.ylabel('Budget in 100\'s of million ($)')
     plt.show()
 
@@ -438,7 +438,7 @@ def genre_runtime(dataframe):
     # Group by genre and find the average of run times sorted in ascending order
     runtime_by_genre = genre_runtime_combined.sort_values(['runtime']).groupby('genre')['runtime'].mean()
     runtime_by_genre.sort_values().plot(kind='bar')
-    plt.title('Average run time for each genre')
+    plt.title('Average Run Time for Each Genre')
     plt.ylabel('Run time (mins)')
     plt.xlabel('Genre')
     plt.show()
