@@ -278,34 +278,35 @@ def specific_statistics(dataframe):
     profit_movie_data.index += 1
 
     # average runtime of movies which had profit >= 50000000
-    print('\nAverage runtime of movies which had profit >= 50000000: {}'.format(get_average(dataframe, 'runtime')))
+    print('\nAverage runtime of movies which had profit >= 50000000: {}'.format(
+        get_average(profit_movie_data, 'runtime')))
 
     # average budget of movies which had profit of >=50000000
-    print('Average budget of movies which had profit >= 50000000: {}'.format(get_average(dataframe,
+    print('Average budget of movies which had profit >= 50000000: {}'.format(get_average(profit_movie_data,
                                                                                          'budget(US-Dollars)')))
 
     # average revenue of movies which had profit of >=50000000
-    print('Average revenue of movies which had profit >=50000000: {}'.format(get_average(dataframe,
+    print('Average revenue of movies which had profit >=50000000: {}'.format(get_average(profit_movie_data,
                                                                                          'revenue(US-Dollars)')))
 
     # count of movies directed by each director
-    director_count = get_column_count(dataframe, 'director')
+    director_count = get_column_count(profit_movie_data, 'director')
     print('\nCount of movies directed by each directed: ')
     print(director_count.head())
 
     # count of cast starring in a particular movie
-    cast_count = get_column_count(dataframe, 'cast')
+    cast_count = get_column_count(profit_movie_data, 'cast')
     print('\nCount of cast starring in a particular movie: ')
     print(cast_count.head())
 
     # count of successful movies in a particular genre
-    successful_genre(dataframe)
+    successful_genre(profit_movie_data)
 
     # count of movies in a month
-    highest_movie_month(dataframe)
+    highest_movie_month(profit_movie_data)
 
     # most profitable month
-    most_profit_month(dataframe)
+    most_profit_month(profit_movie_data)
 
 
 def movie_production_trend(dataframe):
