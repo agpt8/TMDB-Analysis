@@ -277,19 +277,19 @@ def specific_statistics(dataframe):
     # will initialize dataframe from 1 instead of 0
     profit_movie_data.index += 1
 
-    # average runtime of movies which had profit >= 50000000
+    # average runtime of movies
     print('\nAverage runtime of movies which had profit >= 50000000: {}'.format(
         get_average(profit_movie_data, 'runtime')))
 
-    # average budget of movies which had profit of >=50000000
+    # average budget of movies
     print('Average budget of movies which had profit >= 50000000: {}'.format(get_average(profit_movie_data,
                                                                                          'budget(US-Dollars)')))
 
-    # average revenue of movies which had profit of >=50000000
+    # average revenue of movies
     print('Average revenue of movies which had profit >=50000000: {}'.format(get_average(profit_movie_data,
                                                                                          'revenue(US-Dollars)')))
 
-    # average profit of movies which had profit of >=50000000
+    # average profit of movies
     print('Average revenue of movies which had profit >=50000000: {}'.format(get_average(profit_movie_data,
                                                                                          'profit(US-Dollars)')))
 
