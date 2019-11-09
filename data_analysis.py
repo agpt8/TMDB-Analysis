@@ -287,7 +287,7 @@ def specific_statistics(dataframe):
     print('Average revenue of movies: ${}'.format(get_average(profit_movie_data, 'revenue(US-Dollars)')))
 
     # average profit of movies
-    print('Average revenue of movies: ${}'.format(get_average(profit_movie_data, 'profit(US-Dollars)')))
+    print('Average profit of movies: ${}'.format(get_average(profit_movie_data, 'profit(US-Dollars)')))
 
     # count of movies directed by each director
     director_count = get_column_count(profit_movie_data, 'director')
