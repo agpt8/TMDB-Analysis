@@ -451,12 +451,13 @@ def general_analysis(dataframe):
 
     Args:
         dataframe: cleaned data passed for analysis
+
     """
     # movie production trend over the years
     movie_production_trend(dataframe)
 
     # top 20 highest grossing movies
-    highest_movie_month(dataframe)
+    highest_grossing_movies(dataframe)
 
     # top 20 most expensive movies
     most_expensive_movies(dataframe)
