@@ -64,6 +64,14 @@ Now to actually run the script, in the command prompt type `python data_analysis
  recommended that you use a text editor or an IDE to run the script. Personally, I use PyCharm from Jetbrains. It is
   a very powerful IDE. You can also use Visual Studio, Visual Studio Code, Spyder(this is installed when you install
    Anaconda) or any other editor or IDE you like.
+   
+## Sources referred
+
+I have referred a lot of sources while working on this project. Some of them includes:
+
+- Stackoverflow
+- Documentation of packages used (pandas, matplotlib, seaborn)
+- Udacity course lessons
 
 ## Issues
 
