@@ -82,16 +82,16 @@ def get_runtime(dataframe):
     plt.title('Runtime distribution of all the movies')
 
     # plotting runtime distribution of all movies using a histogram plot
-    plt.hist(movie_data['runtime'])
+    plt.hist(dataframe['runtime'])
     plt.show()
 
     # plotting interquartile range of movie runtime using box plot
-    sns.boxplot(movie_data['runtime'])
+    sns.boxplot(dataframe['runtime'])
     plt.show()
 
     # key insights on runtime
     print('\nHere are some key insights on movie runtime: ')
-    print(movie_data_cleaned['runtime'].describe())
+    print(dataframe['runtime'].describe())
 
 
 def profits_each_year(dataframe):
