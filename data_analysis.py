@@ -105,7 +105,6 @@ def profits_each_year(dataframe):
     # Since we want to know the profits of movies for every year we need to group all the movies for those years
     profits_per_year = dataframe.groupby('release_year')['profit(US-Dollars)'].sum()
 
-    # giving the figure size(width, height)
     plt.xlabel('Release Year of Movies')
     plt.ylabel('Total Profits made by Movies')
     plt.title('Total Profits Made by Movies')
@@ -277,6 +276,7 @@ def specific_statistics(dataframe):
     # will initialize dataframe from 1 instead of 0
     profit_movie_data.index += 1
 
+    print('\nHere are some numbers for most profitable movies:')
     # average runtime of movies
     print('\nAverage runtime of movies: {} min(s)'.format(get_average(profit_movie_data, 'runtime')))
 
@@ -370,6 +370,7 @@ def most_expensive_movies(dataframe):
     """
     sorted_budget = dataframe['budget(US-Dollars)'].sort_values(ascending=False)[:20]
     high_budget = pd.DataFrame(sorted_budget)
+
     titles_exp = []
     budgets = []
     for i in sorted_budget.index:
