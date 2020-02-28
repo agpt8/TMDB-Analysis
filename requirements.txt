@@ -3,7 +3,7 @@ agate-dbf==0.2.1
 agate-excel==0.2.3
 agate-sql==0.5.4
 astroid==2.2.5
-autopep8==1.4.4
+autopep8==1.5
 Babel==2.7.0
 certifi==2019.9.11
 colorama==0.4.1
