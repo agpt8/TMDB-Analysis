@@ -33,7 +33,7 @@ python-dateutil==2.8.0
 python-slugify==3.0.3
 pytimeparse==1.1.8
 pytz==2019.1
-rope==0.14.0
+rope==0.16.0
 scipy==1.4.1
 seaborn==0.10.0
 six==1.14.0
