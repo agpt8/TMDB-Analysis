@@ -23,7 +23,7 @@ mkl-service==2.3.0
 numpy==1.18.1
 openpyxl==3.0.3
 pandas==1.0.1
-parsedatetime==2.4
+parsedatetime==2.5
 patsy==0.5.1
 pipenv==2018.11.26
 pycodestyle==2.5.0
